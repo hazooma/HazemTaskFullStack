@@ -45,17 +45,12 @@ separatly on the map.
 
 **Solution**
 1. Change the server (`server/index.js`) so that the tracking data is
-split into multiple arrays (segments). One way to split the array is by using
-the `time` property. When the time gap exceeds a certain treshhold a new
-segment begins. Each segment then should be one tracked trip. If you find a different
-way to split the array into trips feel free to implement it instead.
+split into multiple arrays (segments). Check Helper.locations_To_Segments function
 
 2. Adapt the front-end (`client/src/map_container.js`) so that the different
 segments are displayed on the map in a different style. For example use
-different colors for different segment.
+different colors for different segment.(Done )
 
-After finishing task 1 please make a commit with a commit message that
-indicates that the task is finished.
 
 # Task 2 - Going back in time
 **Motivation**
@@ -65,20 +60,18 @@ time in the past. For example where was the driver yesterday at 13:00?
 **Solution**
 1. Add the `/location/:when` GET route to the server (`server/index.js`)
 which takes a datetime string as query parameter `when` and returns the
-tracking data closest to this time.
+tracking data closest to this time.(Added already ) 
+
 2. Add a slider to the front-end
 (`client/src/index.js` and possibly a new file) which can be used to select a
 time in the past. Choose a sensible time range so that tracking data is
 available for this range. Pass the selected time as prop to the map
-container.
-3. Adapt the map container (`client/src/map_container`) to fetch the data
-matching to the selected time and display the result on the map. For example a [leaflet marker](https://leafletjs.com/reference-1.5.0.html#marker) can be used to display the location.
+container.(Done )
 
-Again once finished with task 2 make a commit that indicated task 2 has been finished. 
+3. Adapt the map container (`client/src/map_container`) to fetch the data
+matching to the selected time and display the result on the map. For example a [leaflet marker](https://leafletjs.com/reference-1.5.0.html#marker) can be used to display the location. (Done)
 
 # Notes
-- You are free to install new packages if it makes sense.
-- If you want to adapt styling you can do so by changing `client/src/styles.css`.
-- If you have an idea to solve a task in a better way feel free to do so. 
+-All variables like range and time for each segment are controlles by .env file .
 
 Happy coding!
