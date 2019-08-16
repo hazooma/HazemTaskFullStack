@@ -18,7 +18,15 @@ const MapComponent = props => {
   const [locations, setLocations] = useState();
   const [link, setLink] = useState("http://localhost:3000");
   const handler = input => {
-    setLink("http://localhost:3000/location/2019-07-23T18:25:52.148Z");
+    let date = new Date();
+    date.setFullYear(input.year);
+    date.setMonth(input.month);
+    date.setDate(input.day);
+    date.setHours(input.hour);
+    date.setMinutes(input.minute);
+    date.setSeconds(input.second);
+    console.log(`http://localhost:3000/location/${date.toISOString()}`);
+    setLink(`http://localhost:3000/location/${date.toISOString()}`);
   };
   // Request location data.
   useEffect(() => {
@@ -48,17 +56,17 @@ const MapComponent = props => {
 
   // Update location data on map.
   useEffect(() => {
-    if (!currentMap || !locations) {
+    console.log(locations);
+    if (!currentMap || !locations || locations.error) {
       return; // If map or locations not loaded yet.
     }
-    if (polylines.length > 0) {
-      polylines.forEach(pl => {});
-    }
-    // console.log(currentMap);
+
     polylines.forEach(pl => {
       currentMap.removeLayer(pl);
     });
+    polylines = [];
     locations.forEach(segment => {
+      if (segment.locations.length === 0) return;
       // TODO(Task 1): Replace the single red polyline by the different segments on the map.
       const latlons = segment.locations.map(({ lat, lon }) => [lat, lon]);
       const polyline = L.polyline(latlons, {

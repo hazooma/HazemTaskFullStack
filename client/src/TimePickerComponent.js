@@ -6,11 +6,11 @@ export default class DatePicker extends React.Component {
     super(props);
     this.state = {
       showPickyDateTime: true,
-      date: "15",
-      month: "08",
+      date: "23",
+      month: "06",
       year: "2019",
-      hour: "03",
-      minute: "10",
+      hour: "20",
+      minute: "25",
       second: "40",
       meridiem: "PM"
     };
@@ -23,7 +23,14 @@ export default class DatePicker extends React.Component {
   }
 
   onChange(event) {
-    this.props.handle(event);
+    this.props.handle({
+      day: this.state.date,
+      month: this.state.month,
+      year: this.state.year,
+      minute: this.state.minute,
+      hour: this.state.hour,
+      second: this.state.second
+    });
   }
   render() {
     const {
