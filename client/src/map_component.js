@@ -20,11 +20,12 @@ const MapComponent = props => {
   const handler = input => {
     let date = new Date();
     date.setFullYear(input.year);
-    date.setMonth(input.month);
+    date.setMonth(parseInt(input.month) - 1);
     date.setDate(input.day);
     date.setHours(input.hour);
     date.setMinutes(input.minute);
     date.setSeconds(input.second);
+    console.log(input);
     console.log(`http://localhost:3000/location/${date.toISOString()}`);
     setLink(`http://localhost:3000/location/${date.toISOString()}`);
   };
@@ -56,7 +57,6 @@ const MapComponent = props => {
 
   // Update location data on map.
   useEffect(() => {
-    console.log(locations);
     if (!currentMap || !locations || locations.error) {
       return; // If map or locations not loaded yet.
     }

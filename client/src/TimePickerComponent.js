@@ -6,29 +6,54 @@ export default class DatePicker extends React.Component {
     super(props);
     this.state = {
       showPickyDateTime: true,
-      date: "23",
-      month: "06",
-      year: "2019",
-      hour: "20",
-      minute: "25",
-      second: "40",
+      date: 10,
+      month: 6,
+      year: 2019,
+      hour: 2,
+      minute: 25,
+      second: 40,
       meridiem: "PM"
     };
     this.onMeridiemChange = this.onMeridiemChange.bind(this);
     this.onChange = this.onChange.bind(this);
+    this.onChangeHour = this.onChangeHour.bind(this);
+    this.onChangeMinute = this.onChangeMinute.bind(this);
+    this.onChangeSecond = this.onChangeSecond.bind(this);
   }
   onMeridiemChange() {
     let newstate = this.state.meridiem === "PM" ? "AM" : "PM";
     this.setState({ meridiem: newstate });
   }
+  onChangeHour(event) {
+    this.setState({
+      hour:
+        this.state.meridiem === "PM"
+          ? parseInt(event.value)
+          : parseInt(event.value)
+    });
+    this.onChange(event);
+  }
+  onChangeMinute(event) {
+    this.setState({ minute: parseInt(event.value) });
+    this.onChange(event);
+  }
+  onChangeSecond(event) {
+    this.setState({ second: parseInt(event.value) });
+    this.onChange(event);
+  }
 
   onChange(event) {
+    const { date, year, month } = event;
+    if (date) {
+      this.setState({ date, year, month });
+    }
     this.props.handle({
-      day: this.state.date,
-      month: this.state.month,
-      year: this.state.year,
+      day: date || this.state.date,
+      month: month || this.state.month,
+      year: year || this.state.year,
       minute: this.state.minute,
-      hour: this.state.hour,
+      hour:
+        this.state.meridiem === "PM" ? this.state.hour + 12 : this.state.hour,
       second: this.state.second
     });
   }
@@ -51,19 +76,15 @@ export default class DatePicker extends React.Component {
         locale={`en-us`} // 'en-us' or 'zh-cn'; default is en-us
         show={showPickyDateTime} //default is false
         onClose={() => this.setState({ showPickyDateTime: true })}
-        defaultTime={`${hour}:${minute}:${second} ${meridiem}`} // OPTIONAL. format: "HH:MM:SS AM"
         defaultDate={`${month}/${date}/${year}`} // OPTIONAL. format: "MM/DD/YYYY"
         // onYearPicked={res => this.onYearPicked(res)}
         // onMonthPicked={res => this.onMonthPicked(res)}
         onDatePicked={res => this.onChange(res)}
         // onResetDate={res => this.onResetDate(res)}
         // onResetDefaultDate={res => this.onResetDefaultDate(res)}
-        onSecondChange={res => this.onChange(res)}
-        onMinuteChange={res => this.onChange(res)}
-        onHourChange={res => this.onChange(res)}
-        onResetTime={res => this.onMeridiemChange(res)}
-        onResetDefaultTime={res => this.onResetDefaultTime(res)}
-        onClearTime={res => this.onMeridiemChange(res)}
+        onSecondChange={res => this.onChangeSecond(res)}
+        onMinuteChange={res => this.onChangeMinute(res)}
+        onHourChange={res => this.onChangeHour(res)}
       />
     );
   }
